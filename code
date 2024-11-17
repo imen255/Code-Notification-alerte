@@ -1,60 +1,77 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Notification d'Alerte</title>
+    <title>Gestion d'Irrigation Intelligente</title>
     <style>
-        #alertBox {
-            display: none;
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background-color: #f8d7da;
-            color: #721c24;
-            padding: 15px;
-            border: 1px solid #f5c6cb;
-            border-radius: 5px;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        body {
             font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
         }
-        #alertBox button {
-            background: none;
-            border: none;
-            color: #721c24;
-            font-weight: bold;
-            margin-left: 10px;
-            cursor: pointer;
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            margin: auto;
+        }
+        .alert {
+            background-color: #f44336;
+            color: white;
+            padding: 10px;
+            margin-top: 20px;
+            border-radius: 4px;
+            display: none;
+        }
+        .normal {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            margin-top: 20px;
+            border-radius: 4px;
+            display: none;
         }
     </style>
 </head>
 <body>
-    <!-- Boîte d'alerte -->
-    <div id="alertBox">
-        ⚠️ Alerte : Une anomalie a été détectée !
-        <button onclick="closeAlert()">Fermer</button>
+
+    <div class="container">
+        <h2>Plateforme de Gestion d'Irrigation</h2>
+        <label for="consommation">Entrez la consommation d'eau (en litres) :</label>
+        <input type="number" id="consommation" placeholder="Consommation en litres">
+        <button onclick="verifierConsommation()">Vérifier</button>
+
+        <div id="alert" class="alert">Alerte : Surconsommation d'eau !</div>
+        <div id="normal" class="normal">Consommation normale d'eau.</div>
     </div>
 
-    <!-- Bouton pour tester l'alerte -->
-    <button onclick="showAlert()">Afficher une alerte</button>
-
     <script>
-        // Fonction pour afficher l'alerte
-        function showAlert() {
-            const alertBox = document.getElementById("alertBox");
-            alertBox.style.display = "block";
+        // Définir le seuil de consommation d'eau (en litres)
+        const SEUIL_CONSOMMATION = 1000;
 
-            // Masquer automatiquement après 5 secondes
-            setTimeout(() => {
-                alertBox.style.display = "none";
-            }, 5000);
-        }
+        // Fonction pour vérifier la consommation et afficher une alerte
+        function verifierConsommation() {
+            const consommation = parseFloat(document.getElementById('consommation').value);
 
-        // Fonction pour fermer l'alerte
-        function closeAlert() {
-            const alertBox = document.getElementById("alertBox");
-            alertBox.style.display = "none";
+            // Vérifie si la consommation est valide
+            if (isNaN(consommation) || consommation <= 0) {
+                alert("Veuillez entrer une valeur valide pour la consommation.");
+                return;
+            }
+
+            // Vérifie si la consommation dépasse le seuil
+            if (consommation > SEUIL_CONSOMMATION) {
+                document.getElementById('alert').style.display = 'block';
+                document.getElementById('normal').style.display = 'none';
+            } else {
+                document.getElementById('alert').style.display = 'none';
+                document.getElementById('normal').style.display = 'block';
+            }
         }
     </script>
+
 </body>
 </html>
